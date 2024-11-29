@@ -1,0 +1,8 @@
+{
+  "id": "registry",
+  "name": "Plugin Registry",
+  "version": "0.1.0",
+  "description": "Plugin registry and management",
+  "author": "asbjborg",
+  "main": "index.json"
+} 

@@ -1,0 +1,11 @@
+{
+  "id": "core",
+  "name": "Core Plugin",
+  "version": "0.1.0",
+  "description": "Core functionality for Tallimantra",
+  "author": "asbjborg",
+  "main": "dist/index.js",
+  "dependencies": {
+    "eventemitter3": "^5.0.1"
+  }
+} 
