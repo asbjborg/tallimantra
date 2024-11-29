@@ -31,20 +31,8 @@ const manifestSchema = {
       properties: {
         '@tallimantra/core': { type: 'string' }
       },
-      required: ['@tallimantra/core']
-    },
-    permissions: {
-      type: 'array',
-      items: {
-        type: 'string',
-        enum: ['network', 'storage', 'media']
-      }
-    },
-    config: {
-      type: 'object',
-      properties: {
-        schema: { type: 'object' }
-      }
+      // Only require @tallimantra/core for non-core plugins
+      required: []
     }
   }
 };
@@ -75,6 +63,14 @@ plugins.forEach(plugin => {
 
   try {
     const manifest = JSON.parse(fs.readFileSync(manifestFile, 'utf8'));
+    
+    // Add extra validation for non-core plugins
+    if (plugin !== 'core' && (!manifest.dependencies || !manifest.dependencies['@tallimantra/core'])) {
+      console.error(`❌ ${plugin}: Non-core plugins must depend on @tallimantra/core`);
+      hasErrors = true;
+      return;
+    }
+    
     const valid = validate(manifest);
 
     if (!valid) {
