@@ -1,0 +1,72 @@
+{
+  "name": "@tallimantra/media-preview",
+  "version": "0.1.0",
+  "description": "Automatically detects and renders media URLs inline in your chat feed",
+  "author": "Tallimantra",
+  "homepage": "https://github.com/asbjborg/tallimantra",
+  "repository": "github:asbjborg/tallimantra",
+  "license": "AGPL-3.0-or-later",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "@tallimantra/core": "^0.1.0"
+  },
+  "permissions": [
+    "network",
+    "storage",
+    "media"
+  ],
+  "config": {
+    "schema": {
+      "max_width": {
+        "type": "number",
+        "default": 800,
+        "description": "Maximum width of previews in pixels"
+      },
+      "max_height": {
+        "type": "number",
+        "default": 600,
+        "description": "Maximum height of previews in pixels"
+      },
+      "lazy_load": {
+        "type": "boolean",
+        "default": true,
+        "description": "Load images only when they enter viewport"
+      },
+      "formats": {
+        "type": "object",
+        "properties": {
+          "image": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": ["jpg", "jpeg", "png", "gif", "webp"],
+            "description": "Supported image formats"
+          },
+          "video": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": ["mp4", "webm"],
+            "description": "Supported video formats"
+          },
+          "audio": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "default": ["mp3", "wav"],
+            "description": "Supported audio formats"
+          }
+        }
+      },
+      "click_to_expand": {
+        "type": "boolean",
+        "default": true,
+        "description": "Enable click-to-expand for media previews"
+      }
+    }
+  }
+} 

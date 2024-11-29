@@ -1,0 +1,15 @@
+build:
+  # Directory to build from
+  source: dist/plugin-store
+  # Branch to deploy from
+  branch: gh-pages
+
+# Plugin store settings
+plugins:
+  directory: plugins
+  registry: plugins/registry/index.json
+  output: dist/plugin-store
+
+# Build settings
+url: https://asbjborg.github.io/tallimantra
+baseurl: /tallimantra 

@@ -1,0 +1,71 @@
+```yaml
+# Cursor Assistant Rules
+# These rules guide the AI assistant's behavior across the project
+
+## Documentation
+- Follow guides in docs/guides/ for all tasks
+- Documentation serves both humans and AI - keep it dual-purpose
+- Use AI markers (@ai-task, @context) in documentation
+- Add YAML frontmatter with AI context
+- Keep examples practical and executable
+
+## Code Style
+- Follow Prettier configuration for all code formatting
+- Use ESLint rules as defined in .eslintrc
+- Prefer TypeScript over JavaScript
+- Use explicit types, avoid 'any'
+- Follow functional programming principles where possible
+
+## Git Practices
+- Write conventional commits (feat:, fix:, docs:, etc.)
+- Keep commits atomic and focused
+- Reference issues in commits where applicable
+
+## Project Structure
+- Place all utilities in utilities/
+- Follow plugin architecture for new features
+- Keep core functionality minimal
+- Use TypeScript for all new code
+
+## Testing
+- Write tests for all new features
+- Maintain test coverage above 80%
+- Follow TDD where applicable
+- Use Jest for testing
+
+## Dependencies
+- Minimize external dependencies
+- Pin dependency versions
+- Document all new dependencies
+- Prefer well-maintained, typed packages
+
+## Security
+- Never commit secrets or credentials
+- Follow security guidelines in SECURITY.md
+- Use environment variables for configuration
+- Validate all inputs
+
+## Performance
+- Consider performance implications of changes
+- Optimize for both speed and memory
+- Use lazy loading where appropriate
+- Profile significant changes
+
+## Error Handling
+- Use typed errors
+- Provide meaningful error messages
+- Log errors appropriately
+- Handle edge cases explicitly
+
+## Accessibility
+- Follow WCAG 2.1 guidelines
+- Test with screen readers
+- Provide keyboard navigation
+- Use semantic HTML
+
+## AI Integration
+- Use documentation as primary instruction source
+- Follow guide-specific instructions from docs/guides/
+- Respect AI markers in documentation
+- Consider both human and AI readers in documentation
+``` 

@@ -1,0 +1,118 @@
+{
+  "name": "@tallimantra/n8n-webhook",
+  "version": "0.1.0",
+  "description": "N8N webhook integration for Tallimantra",
+  "author": "",
+  "homepage": "https://github.com/asbjborg/tallimantra",
+  "repository": "github:asbjborg/tallimantra",
+  "license": "AGPL-3.0-or-later",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "supports_multiple_instances": true,
+  "instance_name_template": "n8n-webhook-{{name}}",
+  "dependencies": {
+    "@tallimantra/core": "^0.1.0"
+  },
+  "permissions": [
+    "network",
+    "storage"
+  ],
+  "config": {
+    "schema": {
+      "name": {
+        "type": "string",
+        "description": "Unique name for this webhook instance",
+        "required": true,
+        "pattern": "^[a-z0-9-]+$",
+        "example": "chat-processor"
+      },
+      "endpoint": {
+        "type": "string",
+        "description": "n8n webhook endpoint path (without /webhook/ prefix)",
+        "required": true,
+        "example": "orchestrator"
+      },
+      "test_mode": {
+        "type": "boolean",
+        "description": "Use test endpoint (/webhook-test/ instead of /webhook/)",
+        "default": false
+      },
+      "timeout": {
+        "type": "number",
+        "description": "Request timeout in milliseconds",
+        "default": 30000
+      },
+      "auth": {
+        "type": "object",
+        "description": "Webhook authentication settings",
+        "required": false,
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Authentication type as configured in n8n webhook trigger",
+            "enum": ["none", "basicAuth", "headerAuth", "jwtAuth"],
+            "default": "none"
+          },
+          "basic_auth": {
+            "type": "object",
+            "description": "Basic Auth settings",
+            "properties": {
+              "username": {
+                "type": "string",
+                "description": "Basic auth username"
+              },
+              "password": {
+                "type": "string",
+                "description": "Basic auth password",
+                "secret": true
+              }
+            }
+          },
+          "header_auth": {
+            "type": "object",
+            "description": "Header Auth settings",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Header name"
+              },
+              "value": {
+                "type": "string",
+                "description": "Header value",
+                "secret": true
+              }
+            }
+          },
+          "jwt_auth": {
+            "type": "object",
+            "description": "JWT Auth settings",
+            "properties": {
+              "key_type": {
+                "type": "string",
+                "description": "JWT key type",
+                "enum": ["passphrase", "pemKey"],
+                "default": "passphrase"
+              },
+              "secret": {
+                "type": "string",
+                "description": "JWT secret (passphrase or PEM key)",
+                "secret": true
+              },
+              "algorithm": {
+                "type": "string",
+                "description": "JWT signing algorithm",
+                "enum": [
+                  "HS256", "HS384", "HS512",
+                  "RS256", "RS384", "RS512",
+                  "ES256", "ES384", "ES512",
+                  "PS256", "PS384", "PS512"
+                ],
+                "default": "HS256"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+} 
