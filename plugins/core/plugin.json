@@ -9,7 +9,6 @@
   "homepage": "https://github.com/asbjborg/tallimantra",
   "repository": "https://github.com/asbjborg/tallimantra",
   "dependencies": {
-    "@tallimantra/core": "^0.1.0",
     "eventemitter3": "^5.0.1"
   }
 } 
