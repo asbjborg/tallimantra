@@ -1,0 +1,12 @@
+# Default owners for everything in the repo
+* @asbjborg
+
+# Core plugin system
+/plugins/core/ @asbjborg
+
+# Documentation
+/docs/ @asbjborg
+
+# Security-sensitive areas
+/SECURITY.md @asbjborg
+/.github/workflows/ @asbjborg 

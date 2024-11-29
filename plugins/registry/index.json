@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "last_updated": "2024-01-17",
+  "plugins": [
+    {
+      "id": "n8n-workflow",
+      "name": "n8n Workflow",
+      "version": "1.0.0",
+      "description": "Connect to n8n workflows for chat processing",
+      "author": "asbjborg",
+      "repository": "https://github.com/asbjborg/tallimantra",
+      "path": "/plugins/n8n-workflow",
+      "tags": ["n8n", "workflow", "automation"],
+      "dependencies": {},
+      "permissions": [
+        "network",
+        "storage"
+      ]
+    }
+  ]
+} 

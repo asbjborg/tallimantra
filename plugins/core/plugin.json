@@ -1,0 +1,14 @@
+{
+  "name": "@tallimantra/core",
+  "version": "0.1.0",
+  "description": "Core functionality for Tallimantra",
+  "author": "asbjborg",
+  "license": "AGPL-3.0-or-later",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "homepage": "https://github.com/asbjborg/tallimantra",
+  "repository": "https://github.com/asbjborg/tallimantra",
+  "dependencies": {
+    "eventemitter3": "^5.0.1"
+  }
+} 

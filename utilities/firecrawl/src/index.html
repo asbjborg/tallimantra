@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Firecrawl - Documentation Crawler</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .group {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .group h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #666;
+        }
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .checkbox-group {
+            margin: 10px 0;
+        }
+        .checkbox-group label {
+            display: inline;
+            margin-left: 5px;
+        }
+        button {
+            background: #007AFF;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        #progress {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: #007AFF;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Firecrawl - Documentation Crawler</h2>
+        
+        <div class="group">
+            <h3>URL and Mode</h3>
+            <label for="url">URL to Crawl:</label>
+            <input type="text" id="url" placeholder="https://docs.example.com">
+            
+            <label for="mode">Mode:</label>
+            <select id="mode">
+                <option value="scrape">Scrape (single page)</option>
+                <option value="crawl">Crawl (multiple pages)</option>
+                <option value="map">Map (site structure)</option>
+            </select>
+        </div>
+
+        <div class="group">
+            <h3>Content Options</h3>
+            <div class="checkbox-group">
+                <input type="checkbox" id="format-markdown" checked>
+                <label for="format-markdown">Markdown</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="format-links">
+                <label for="format-links">Links</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="format-html">
+                <label for="format-html">HTML</label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="format-screenshot">
+                <label for="format-screenshot">Screenshot</label>
+            </div>
+        </div>
+
+        <div class="group" id="crawl-options">
+            <h3>Crawl Options</h3>
+            <label for="max-depth">Maximum Depth:</label>
+            <input type="number" id="max-depth" value="2" min="0">
+            
+            <label for="page-limit">Page Limit:</label>
+            <input type="number" id="page-limit" value="100" min="1">
+            
+            <label for="include-paths">Include Paths (comma-separated):</label>
+            <input type="text" id="include-paths" placeholder="/docs/*,/blog/*">
+            
+            <label for="exclude-paths">Exclude Paths (comma-separated):</label>
+            <input type="text" id="exclude-paths" placeholder="/admin/*,/login/*">
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="allow-backward">
+                <label for="allow-backward">Allow Backward Links</label>
+            </div>
+            
+            <div class="checkbox-group">
+                <input type="checkbox" id="allow-external">
+                <label for="allow-external">Allow External Links</label>
+            </div>
+        </div>
+
+        <div class="group">
+            <h3>Output</h3>
+            <label for="output-folder">Output Folder:</label>
+            <input type="text" id="output-folder" placeholder="(default: from URL)">
+        </div>
+
+        <button id="start">Start</button>
+
+        <div id="progress" style="display: none;">
+            <div id="status">Ready</div>
+            <div class="progress-bar">
+                <div class="progress-bar-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Will be implemented in index.ts
+    </script>
+</body>
+</html> 
