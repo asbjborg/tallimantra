@@ -1,8 +1,13 @@
 {
-  "id": "registry",
-  "name": "Plugin Registry",
+  "name": "@tallimantra/registry",
   "version": "0.1.0",
   "description": "Plugin registry and management",
   "author": "asbjborg",
-  "main": "index.json"
+  "license": "AGPL-3.0-or-later",
+  "main": "index.json",
+  "homepage": "https://github.com/asbjborg/tallimantra",
+  "repository": "https://github.com/asbjborg/tallimantra",
+  "dependencies": {
+    "@tallimantra/core": "^0.1.0"
+  }
 } 
