@@ -1,0 +1,39 @@
+{
+  "id": "@tallimantra/registry",
+  "name": "@tallimantra/registry",
+  "version": "0.1.0",
+  "description": "Plugin registry and management",
+  "author": "asbjborg",
+  "license": "AGPL-3.0-or-later",
+  "main": "index.ts",
+  "dependencies": {
+    "@tallimantra/core": "^0.1.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "config": {
+    "schema": {
+      "registry_url": {
+        "type": "string",
+        "description": "URL to the plugin registry",
+        "default": "https://registry.tallimantra.com"
+      },
+      "update_interval": {
+        "type": "number",
+        "description": "Registry update check interval in minutes",
+        "default": 60
+      },
+      "cache_ttl": {
+        "type": "number",
+        "description": "Cache time-to-live in minutes",
+        "default": 1440
+      },
+      "auto_update": {
+        "type": "boolean",
+        "description": "Automatically update plugins when new versions are available",
+        "default": false
+      }
+    }
+  }
+} 

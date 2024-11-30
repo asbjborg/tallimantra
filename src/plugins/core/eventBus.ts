@@ -53,4 +53,5 @@ export class EventBus extends EventEmitter {
   }
 }
 
-export default new EventBus(); 
+// Export a singleton instance
+export const eventBus = new EventBus(); 

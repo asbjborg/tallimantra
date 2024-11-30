@@ -1,12 +1,21 @@
-feat: Next.js v15 setup with Tailwind
+refactor: migrate plugins to TypeScript and new architecture
 
-Sets up Next.js v15.0.3 with TypeScript and Tailwind CSS.
+- Move plugins from /plugins to /src/plugins
+- Convert all plugins to TypeScript
+- Add proper type definitions
+- Integrate with event bus system
+- Improve error handling and configuration
 
-Changes:
-- Update Next.js to v15.0.3
-- Configure Tailwind CSS with typography plugin
-- Fix content paths for Tailwind
-- Remove deprecated Next.js options
-- Update all related dependencies
+Plugins migrated:
+- Core: Event bus and base functionality
+- Media Preview: URL detection and rendering
+- N8N Webhook: Integration with n8n workflows
+- Registry: Plugin management and updates
 
-This PR provides the foundation for building out the app pages and components. 
+Breaking changes:
+- Plugin paths have changed
+- All plugins now require TypeScript
+- Plugin APIs are now strictly typed
+- Event-based communication between plugins
+
+Closes #4

@@ -23,6 +23,7 @@ yarn-error.log*
 .vscode/
 *.swp
 *.swo
+*.commit-message.txt
 
 # OS
 .DS_Store

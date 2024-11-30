@@ -1,22 +1,18 @@
 {
+  "id": "@tallimantra/n8n-webhook",
   "name": "@tallimantra/n8n-webhook",
   "version": "0.1.0",
   "description": "N8N webhook integration for Tallimantra",
-  "author": "",
-  "homepage": "https://github.com/asbjborg/tallimantra",
-  "repository": "github:asbjborg/tallimantra",
+  "author": "Tallimantra",
   "license": "AGPL-3.0-or-later",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "supports_multiple_instances": true,
-  "instance_name_template": "n8n-webhook-{{name}}",
+  "main": "index.ts",
   "dependencies": {
-    "@tallimantra/core": "^0.1.0"
+    "@tallimantra/core": "^0.1.0",
+    "jsonwebtoken": "^9.0.0"
   },
-  "permissions": [
-    "network",
-    "storage"
-  ],
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "config": {
     "schema": {
       "name": {
