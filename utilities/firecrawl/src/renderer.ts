@@ -1,128 +1,110 @@
 import { ipcRenderer } from 'electron';
-import type { CrawlOptions } from './index';
+import type { CrawlConfig } from './types';
 
 // UI Elements
 const urlInput = document.getElementById('url') as HTMLInputElement;
+const outputDirInput = document.getElementById('outputDir') as HTMLInputElement;
 const modeSelect = document.getElementById('mode') as HTMLSelectElement;
-const startButton = document.getElementById('start') as HTMLButtonElement;
-const progressBar = document.getElementById('progress') as HTMLDivElement;
-const progressBarFill = document.querySelector('.progress-bar-fill') as HTMLDivElement;
-const statusText = document.getElementById('status') as HTMLDivElement;
+const startButton = document.getElementById('startCrawl') as HTMLButtonElement;
+const statusDiv = document.getElementById('status') as HTMLDivElement;
 
-// Format checkboxes
-const formatCheckboxes = {
-  markdown: document.getElementById('format-markdown') as HTMLInputElement,
-  links: document.getElementById('format-links') as HTMLInputElement,
-  html: document.getElementById('format-html') as HTMLInputElement,
-  screenshot: document.getElementById('format-screenshot') as HTMLInputElement,
-};
+// Mode-specific options
+const crawlOptions = document.getElementById('crawlOptions') as HTMLDivElement;
+const mapOptions = document.getElementById('mapOptions') as HTMLDivElement;
 
-// Crawl options
-const maxDepthInput = document.getElementById('max-depth') as HTMLInputElement;
-const pageLimitInput = document.getElementById('page-limit') as HTMLInputElement;
-const includePathsInput = document.getElementById('include-paths') as HTMLInputElement;
-const excludePathsInput = document.getElementById('exclude-paths') as HTMLInputElement;
-const allowBackwardInput = document.getElementById('allow-backward') as HTMLInputElement;
-const allowExternalInput = document.getElementById('allow-external') as HTMLInputElement;
-const outputFolderInput = document.getElementById('output-folder') as HTMLInputElement;
-
-// Show/hide crawl options based on mode
-modeSelect.addEventListener('change', () => {
-  const crawlOptions = document.getElementById('crawl-options') as HTMLDivElement;
-  crawlOptions.style.display = modeSelect.value === 'crawl' ? 'block' : 'none';
-});
-
-// Get selected formats
-function getSelectedFormats(): string[] {
-  return Object.entries(formatCheckboxes)
-    .filter(([_, checkbox]) => checkbox.checked)
-    .map(([format]) => format);
+function showError(message: string): void {
+  statusDiv.innerHTML = `<div class="error">${message}</div>`;
 }
 
-// Get crawl options
-function getCrawlOptions(): CrawlOptions {
-  const options: CrawlOptions = {
-    formats: getSelectedFormats(),
-  };
-
-  if (modeSelect.value === 'crawl') {
-    options.maxDepth = parseInt(maxDepthInput.value);
-    options.limit = parseInt(pageLimitInput.value);
-    
-    const includePaths = includePathsInput.value.trim();
-    if (includePaths) {
-      options.includePaths = includePaths.split(',').map(p => p.trim());
-    }
-    
-    const excludePaths = excludePathsInput.value.trim();
-    if (excludePaths) {
-      options.excludePaths = excludePaths.split(',').map(p => p.trim());
-    }
-    
-    options.allowBackwardLinks = allowBackwardInput.checked;
-    options.allowExternalLinks = allowExternalInput.checked;
-  }
-
-  return options;
+function showSuccess(message: string): void {
+  statusDiv.innerHTML = `<div class="success">${message}</div>`;
 }
 
-// Start button handler
-startButton.addEventListener('click', async () => {
-  const url = urlInput.value.trim();
-  if (!url) {
-    alert('Please enter a URL');
-    return;
+function showStatus(message: string): void {
+  statusDiv.innerHTML = `<div class="info">${message}</div>`;
+}
+
+function updateOptions(): void {
+  const mode = modeSelect.value;
+  
+  // Hide all option sections first
+  crawlOptions.style.display = 'none';
+  mapOptions.style.display = 'none';
+  
+  // Show relevant options based on mode
+  switch (mode) {
+    case 'crawl':
+      crawlOptions.style.display = 'block';
+      break;
+    case 'map':
+      mapOptions.style.display = 'block';
+      break;
   }
+}
 
-  // Disable inputs during processing
-  startButton.disabled = true;
-  progressBar.style.display = 'block';
-  statusText.textContent = 'Starting...';
-  progressBarFill.style.width = '0%';
-
+async function startCrawl(): Promise<void> {
   try {
-    const options = getCrawlOptions();
-    const outputFolder = outputFolderInput.value.trim() || new URL(url).hostname.split('.')[0];
-
-    // Send to main process
-    ipcRenderer.send('start-crawl', {
+    // Validate inputs
+    const url = urlInput.value.trim();
+    if (!url) {
+      showError('Please enter a URL');
+      return;
+    }
+    
+    const outputDir = outputDirInput.value.trim();
+    if (!outputDir) {
+      showError('Please specify an output directory');
+      return;
+    }
+    
+    const mode = modeSelect.value;
+    
+    // Get mode-specific options
+    const options: Record<string, any> = {};
+    
+    if (mode === 'crawl') {
+      const maxDepth = (document.getElementById('maxDepth') as HTMLInputElement).value;
+      const maxPages = (document.getElementById('maxPages') as HTMLInputElement).value;
+      options.maxDepth = parseInt(maxDepth, 10);
+      options.maxPages = parseInt(maxPages, 10);
+    }
+    
+    if (mode === 'map') {
+      const includeExternal = (document.getElementById('includeExternal') as HTMLInputElement).checked;
+      options.includeExternal = includeExternal;
+    }
+    
+    // Create config
+    const config: CrawlConfig = {
       url,
-      mode: modeSelect.value,
-      options,
-      outputFolder,
-    });
+      outputDir,
+      mode: mode as any,
+      options
+    };
+    
+    // Disable inputs during crawl
+    startButton.disabled = true;
+    showStatus('Starting crawl...');
+    
+    // Send to main process
+    const result = await ipcRenderer.invoke('start-crawl', config);
+    
+    // Handle result
+    if (result.success) {
+      showSuccess(result.message);
+    } else {
+      showError(result.message);
+    }
   } catch (error) {
-    alert(`Error: ${error.message}`);
-    resetUI();
+    showError(error instanceof Error ? error.message : String(error));
+  } finally {
+    startButton.disabled = false;
   }
-});
-
-// Handle progress updates
-ipcRenderer.on('progress', (_, { percent, message }) => {
-  progressBarFill.style.width = `${percent}%`;
-  statusText.textContent = message;
-});
-
-// Handle completion
-ipcRenderer.on('complete', (_, { success, message }) => {
-  if (success) {
-    alert(`Success: ${message}`);
-  } else {
-    alert(`Error: ${message}`);
-  }
-  resetUI();
-});
-
-function resetUI() {
-  startButton.disabled = false;
-  progressBar.style.display = 'none';
-  statusText.textContent = 'Ready';
-  progressBarFill.style.width = '0%';
 }
 
-// Initialize UI
-document.addEventListener('DOMContentLoaded', () => {
-  // Set initial crawl options visibility
-  const crawlOptions = document.getElementById('crawl-options') as HTMLDivElement;
-  crawlOptions.style.display = modeSelect.value === 'crawl' ? 'block' : 'none';
-}); 
+// Event Listeners
+modeSelect.addEventListener('change', updateOptions);
+startButton.addEventListener('click', startCrawl);
+
+// Initial setup
+updateOptions(); 

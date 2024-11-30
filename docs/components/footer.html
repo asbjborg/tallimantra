@@ -1,0 +1,76 @@
+<!-- Tallimantra Footer Component -->
+<footer class="tm-footer">
+    <div class="tm-joke">
+        💡 <strong>Random Dev Joke:</strong><br>
+        <span id="joke-text">Loading dad joke...</span>
+    </div>
+
+    <div class="tm-certificate">
+        <pre class="tm-certificate-art">
+╔══════════════════════════════════════════════════════════════╗
+║     Certificate of Regardation                               ║
+║     This page is certified by SUFFSIS™                       ║
+║     (Department of Advanced Silliness and Serious Stuff)     ║
+╚══════════════════════════════════════════════════════════════╝
+        </pre>
+    </div>
+
+    <div class="tm-footer-text">
+        <p>Powered by caffeine, chaos, and questionable life choices.</p>
+        <p><small>* No developers were harmed in the making of this site, though several did experience severe eye-rolling.</small></p>
+    </div>
+</footer>
+
+<style>
+.tm-footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid #3a3a3a;
+}
+
+.tm-joke {
+    font-style: italic;
+    color: #888;
+    margin: 2rem 0;
+    padding: 1rem;
+    border-left: 4px solid #00ff9d;
+}
+
+.tm-certificate {
+    margin: 2rem 0;
+}
+
+.tm-certificate-art {
+    color: #00ff9d;
+    font-size: 0.8rem;
+    line-height: 1.2;
+    overflow-x: auto;
+}
+
+.tm-footer-text {
+    color: #888;
+    text-align: center;
+    font-size: 0.9rem;
+}
+</style>
+
+<script>
+// Our collection of dad jokes
+const jokes = [
+    "Why do programmers prefer dark mode?\nBecause light attracts bugs! 🪲",
+    "Why did the developer go broke?\nBecause he used up all his cache! 💸",
+    "What's a programmer's favorite hangout spot?\nFoo Bar! 🍻",
+    "Why do programmers always mix up Halloween and Christmas?\nBecause Oct 31 == Dec 25! 🎃",
+    "What did the programmer say to the rubber duck?\nYou're the only one who understands me! 🦆",
+    "Why was the math book sad?\nBecause it had too many problems! 📚",
+    "What did Git say to the developer?\nI've got your branched covered! 🌳",
+    "What's a developer's favorite tea?\nProper-Tea! ☕"
+];
+
+// Update joke when footer loads
+window.addEventListener('load', () => {
+    const jokeText = document.getElementById('joke-text');
+    const randomJoke = jokes[Math.floor(Math.random() * jokes.length)];
+    jokeText.innerHTML = randomJoke.replace('\n', '<br>');
+});
+</script> 

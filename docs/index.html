@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tallimantra - Where Code Meets Comedy</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #1a1a1a;
+            color: #f0f0f0;
+        }
+        
+        .card {
+            background: #2a2a2a;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 12px;
+            border: 1px solid #3a3a3a;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            border-color: #00ff9d;
+        }
+        
+        a {
+            color: #00ff9d;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        .emoji {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+    </style>
+    <script src="/tallimantra/components/loader.js"></script>
+</head>
+<body>
+    <!-- Header will be loaded here -->
+    <div id="tm-header"></div>
+    
+    <main>
+        <div class="card">
+            <h2><span class="emoji">📚</span><a href="/tallimantra/docs">Documentation</a></h2>
+            <p>All the serious stuff, explained with occasional dad jokes. Because even technical docs deserve a laugh.</p>
+        </div>
+
+        <div class="card">
+            <h2><span class="emoji">✍️</span><a href="/tallimantra/blog">Developer Blog</a></h2>
+            <p>Chronicles of our journey, featuring SUFFSIS™ certified content and questionable ASCII art.</p>
+        </div>
+
+        <div class="card">
+            <h2><span class="emoji">🔌</span><a href="/tallimantra/plugins">Plugin Store</a></h2>
+            <p>Extend your experience with plugins that are thoroughly tested* and occasionally work!</p>
+            <small>* By rubber ducks with impressive credentials</small>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded here -->
+    <div id="tm-footer"></div>
+</body>
+</html> 

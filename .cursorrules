@@ -2,12 +2,49 @@
 # Cursor Assistant Rules
 # These rules guide the AI assistant's behavior across the project
 
+## Testing
+- Write tests for ALL new code
+- Follow test-driven development (TDD)
+- Maintain minimum coverage:
+  - 80% branches
+  - 80% functions
+  - 80% lines
+  - 80% statements
+- Test categories required:
+  - Unit tests
+  - Integration tests (where applicable)
+  - Edge cases
+  - Error handling
+- Test documentation:
+  - Clear test descriptions
+  - Test coverage explanation
+  - Edge case documentation
+- Test patterns:
+  - Arrange-Act-Assert
+  - Given-When-Then
+  - Mock external dependencies
+  - Isolate test concerns
+
+## CI/CD
+- Check CI status after pushes using gh commands
+- Wait for checks before suggesting merges
+- Help diagnose failed checks
+- Use GitHub CLI (gh) for all GitHub operations
+- Don't rely on environment variables in commands
+- Remember command sandboxing limitations
+- Verify all required checks pass:
+  - Tests
+  - Linting
+  - Build
+  - Plugin validation
+
 ## Documentation
 - Follow guides in docs/guides/ for all tasks
 - Documentation serves both humans and AI - keep it dual-purpose
 - Use AI markers (@ai-task, @context) in documentation
 - Add YAML frontmatter with AI context
 - Keep examples practical and executable
+- Include test examples in documentation
 
 ## Code Style
 - Follow Prettier configuration for all code formatting
@@ -20,52 +57,67 @@
 - Write conventional commits (feat:, fix:, docs:, etc.)
 - Keep commits atomic and focused
 - Reference issues in commits where applicable
+- Include tests in feature branches
+- Check CI status before suggesting merges
 
 ## Project Structure
 - Place all utilities in utilities/
 - Follow plugin architecture for new features
 - Keep core functionality minimal
 - Use TypeScript for all new code
+- Maintain test directory structure
 
 ## Testing
 - Write tests for all new features
 - Maintain test coverage above 80%
 - Follow TDD where applicable
 - Use Jest for testing
+- Test both success and failure paths
+- Mock external dependencies
+- Test edge cases
+- Document test patterns
 
 ## Dependencies
 - Minimize external dependencies
 - Pin dependency versions
 - Document all new dependencies
 - Prefer well-maintained, typed packages
+- Include test dependencies
 
 ## Security
 - Never commit secrets or credentials
 - Follow security guidelines in SECURITY.md
 - Use environment variables for configuration
 - Validate all inputs
+- Test security measures
 
 ## Performance
 - Consider performance implications of changes
 - Optimize for both speed and memory
 - Use lazy loading where appropriate
 - Profile significant changes
+- Test performance critical paths
 
 ## Error Handling
 - Use typed errors
 - Provide meaningful error messages
 - Log errors appropriately
 - Handle edge cases explicitly
+- Test error conditions
 
 ## Accessibility
 - Follow WCAG 2.1 guidelines
 - Test with screen readers
 - Provide keyboard navigation
 - Use semantic HTML
+- Test accessibility features
 
 ## AI Integration
 - Use documentation as primary instruction source
 - Follow guide-specific instructions from docs/guides/
 - Respect AI markers in documentation
 - Consider both human and AI readers in documentation
+- Include test requirements in AI context
+- Use gh commands for GitHub operations
+- Remember command sandbox limitations
 ``` 
