@@ -16,6 +16,81 @@ This guide provides comprehensive instructions for developing plugins for Tallim
 
 Tallimantra plugins follow a standardized structure and implementation pattern to ensure consistency and quality. This guide will walk you through the complete process of creating a plugin.
 
+## Testing Requirements
+
+### Coverage Standards
+All plugins must maintain minimum test coverage:
+```typescript
+// jest.config.js
+module.exports = {
+  coverageThreshold: {
+    global: {
+      branches: 80,
+      functions: 80,
+      lines: 80,
+      statements: 80
+    }
+  }
+};
+```
+
+### Test Categories
+1. **Unit Tests**
+   - Individual functions
+   - Component behavior
+   - State management
+   - Event handling
+
+2. **Integration Tests**
+   - Plugin activation/deactivation
+   - Event communication
+   - Core system interaction
+   - Data flow
+
+3. **Edge Cases**
+   - Error conditions
+   - Resource limits
+   - Race conditions
+   - Invalid inputs
+
+4. **Performance Tests**
+   - Memory usage
+   - Event handling speed
+   - Resource cleanup
+   - Load testing
+
+### Test Structure
+```typescript
+// Example test structure
+describe('MyPlugin', () => {
+  describe('Lifecycle', () => {
+    it('activates successfully', async () => {
+      // Test activation
+    });
+    
+    it('cleans up on deactivation', async () => {
+      // Test cleanup
+    });
+  });
+
+  describe('Event Handling', () => {
+    it('processes events correctly', async () => {
+      // Test events
+    });
+    
+    it('handles errors gracefully', async () => {
+      // Test error cases
+    });
+  });
+
+  describe('Performance', () => {
+    it('stays within memory limits', async () => {
+      // Test memory usage
+    });
+  });
+});
+```
+
 ## Directory Structure
 
 Create your plugin in `plugins/[plugin-name]` with this structure:
@@ -26,9 +101,12 @@ Create your plugin in `plugins/[plugin-name]` with this structure:
 │   ├── types.ts       # Type definitions
 │   └── components/    # React components
 ├── tests/
-│   └── index.test.ts
+│   ├── unit/         # Unit tests
+│   ├── integration/  # Integration tests
+│   └── performance/  # Performance tests
 ├── package.json
 ├── tsconfig.json
+├── jest.config.js
 └── README.md
 ```
 
@@ -93,6 +171,94 @@ const store = createStore<PluginState>({
 });
 ```
 
+## Testing Guide
+
+### 1. Unit Testing
+```typescript
+// src/__tests__/plugin.test.ts
+import MyPlugin from '../index';
+
+describe('MyPlugin', () => {
+  let plugin: MyPlugin;
+  
+  beforeEach(() => {
+    plugin = new MyPlugin();
+  });
+
+  describe('activation', () => {
+    it('initializes correctly', async () => {
+      await plugin.activate();
+      expect(plugin.isActive).toBe(true);
+    });
+
+    it('handles activation errors', async () => {
+      // Mock error condition
+      await expect(plugin.activate()).rejects.toThrow();
+    });
+  });
+
+  describe('event handling', () => {
+    it('processes events correctly', async () => {
+      const mockHandler = jest.fn();
+      plugin.on('test', mockHandler);
+      await plugin.emit('test', 'data');
+      expect(mockHandler).toHaveBeenCalledWith('data');
+    });
+  });
+});
+```
+
+### 2. Integration Testing
+```typescript
+// tests/integration/core.test.ts
+import { TallimantraCore } from '@tallimantra/core';
+import MyPlugin from '../src';
+
+describe('Plugin Integration', () => {
+  let core: TallimantraCore;
+  let plugin: MyPlugin;
+
+  beforeEach(async () => {
+    core = new TallimantraCore();
+    plugin = await core.loadPlugin(MyPlugin);
+  });
+
+  it('integrates with core system', async () => {
+    await plugin.activate();
+    // Test integration points
+  });
+
+  it('handles system events', async () => {
+    const mockHandler = jest.fn();
+    core.on('system:ready', mockHandler);
+    await core.start();
+    expect(mockHandler).toHaveBeenCalled();
+  });
+});
+```
+
+### 3. Performance Testing
+```typescript
+// tests/performance/memory.test.ts
+import { measureMemory } from '@tallimantra/test-utils';
+
+describe('Plugin Performance', () => {
+  it('stays within memory limits', async () => {
+    const memoryBefore = await measureMemory();
+    // Perform operations
+    const memoryAfter = await measureMemory();
+    expect(memoryAfter - memoryBefore).toBeLessThan(50 * 1024 * 1024); // 50MB limit
+  });
+
+  it('handles high event load', async () => {
+    const start = performance.now();
+    // Generate 1000 events
+    const end = performance.now();
+    expect(end - start).toBeLessThan(1000); // 1 second limit
+  });
+});
+```
+
 ## Documentation Requirements
 
 ### README Structure
@@ -100,6 +266,9 @@ const store = createStore<PluginState>({
 # Plugin Name
 
 Brief description of your plugin's purpose and main features.
+
+## Test Coverage
+Current test coverage metrics and requirements.
 
 ## Features
 - Feature 1: Description
@@ -113,6 +282,17 @@ npm install @tallimantra/plugin-name
 ## Usage
 \`\`\`typescript
 // Usage example
+\`\`\`
+
+## Testing
+\`\`\`bash
+# Run all tests
+npm test
+
+# Run specific test suites
+npm run test:unit
+npm run test:integration
+npm run test:performance
 \`\`\`
 
 ## API
@@ -137,6 +317,11 @@ Detailed API documentation
  * @returns Processed result
  * @throws {ValidationError} When data is invalid
  * @emits data:processed
+ * @test Test cases:
+ * - Valid input data
+ * - Invalid input data
+ * - Edge cases
+ * - Performance limits
  * @example
  * ```typescript
  * const result = await processData({ value: 42 });
@@ -147,44 +332,21 @@ async function processData(data: InputType): Promise<ResultType> {
 }
 ```
 
-## Testing Guidelines
-
-### Unit Tests
-```typescript
-describe('MyPlugin', () => {
-  let plugin: MyPlugin;
-  
-  beforeEach(() => {
-    plugin = new MyPlugin();
-  });
-
-  it('should process data correctly', async () => {
-    const result = await plugin.processData(testData);
-    expect(result).toMatchSnapshot();
-  });
-});
-```
-
-### Integration Tests
-```typescript
-describe('MyPlugin Integration', () => {
-  it('should interact with core system', async () => {
-    await plugin.activate();
-    // Test integration points
-  });
-});
-```
-
 ## Quality Checklist
 
 Before submitting your plugin:
 
 - [ ] All tests pass (`npm test`)
-- [ ] Lint checks pass (`npm run lint`)
-- [ ] Documentation is complete and accurate
-- [ ] All events are documented
-- [ ] Error handling is comprehensive
-- [ ] Performance implications considered
-- [ ] Security considerations addressed
-- [ ] Dependencies are minimal and typed
+- [ ] Coverage meets minimum requirements
+- [ ] Unit tests cover all functions
+- [ ] Integration tests verify core interaction
+- [ ] Performance tests within limits
+- [ ] Edge cases tested
+- [ ] Error handling tested
+- [ ] Memory leaks checked
+- [ ] Event handling tested
+- [ ] Documentation complete
+- [ ] Examples tested
+- [ ] Security tested
+- [ ] Accessibility tested
 ``` 

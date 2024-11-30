@@ -4,18 +4,68 @@ This guide outlines our documentation standards and practices. It serves as both
 
 ## Core Principles
 
-### 1. Dual Purpose
+### 1. Test-Driven Documentation
+- Every feature must have corresponding tests
+- Documentation includes test examples
+- Test coverage requirements are documented
+- Test patterns and best practices are shared
+
+### 2. Dual Purpose
 - Every document serves both humans and AI assistants
 - Structure is machine-readable but human-friendly
 - Examples are practical and executable
 - Context is clear and explicit
 
-### 2. Quality Standards
+### 3. Quality Standards
 - Clear, concise writing
 - Consistent formatting
-- Complete examples
+- Complete examples with tests
 - Accurate technical details
 - Regular updates
+
+## Testing Requirements
+
+### 1. Coverage Standards
+```typescript
+// Minimum coverage requirements
+{
+  "global": {
+    "branches": 80,
+    "functions": 80,
+    "lines": 80,
+    "statements": 80
+  }
+}
+```
+
+### 2. Test Categories
+- Unit Tests: For individual functions and components
+- Integration Tests: For feature interactions
+- End-to-End Tests: For complete workflows
+- Performance Tests: For critical paths
+- Security Tests: For sensitive operations
+
+### 3. Test Documentation
+```typescript
+/**
+ * @test Unit tests must cover:
+ * - Happy path
+ * - Error cases
+ * - Edge cases
+ * - Input validation
+ * 
+ * @example
+ * describe('myFunction', () => {
+ *   it('handles valid input', () => {
+ *     // Test implementation
+ *   });
+ *   
+ *   it('handles invalid input', () => {
+ *     // Error case
+ *   });
+ * });
+ */
+```
 
 ## Document Structure
 
@@ -25,7 +75,8 @@ docs/
 ├── guides/           # How-to guides and standards
 ├── api/              # API documentation
 ├── architecture/     # System design docs
-└── examples/         # Code examples
+├── tests/           # Test documentation and patterns
+└── examples/         # Code examples with tests
 
 # Root-level configuration
 .cursorrules          # AI assistant behavior rules
@@ -39,6 +90,11 @@ docs/
 
 Brief overview (1-2 paragraphs)
 
+## Test Requirements
+- Required coverage
+- Test categories
+- Special considerations
+
 ## Context
 - Who this is for
 - When to use this
@@ -48,7 +104,7 @@ Brief overview (1-2 paragraphs)
 Main content sections
 
 ## Examples
-Practical examples
+Practical examples with tests
 
 ## References
 Related documents

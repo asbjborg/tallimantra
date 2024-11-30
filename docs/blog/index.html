@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tallimantra Blog</title>
+    <script src="/tallimantra/components/loader.js"></script>
+    <style>
+        .post-card {
+            background: #2a2a2a;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 12px;
+            border: 1px solid #3a3a3a;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        
+        .post-card:hover {
+            transform: translateY(-2px);
+            border-color: #00ff9d;
+        }
+        
+        .post-date {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="tm-header"></div>
+    
+    <main>
+        <h1>Developer Blog</h1>
+        <p>Where code meets comedy, and SUFFSIS™ certification is a way of life.</p>
+        
+        <div class="post-card">
+            <span class="post-date">January 2024</span>
+            <h2><a href="/tallimantra/blog/posts/2024-01-context-management.html">The Art of AI Memory</a></h2>
+            <p>A deep dive into how we manage context in Tallimantra, featuring questionable analogies and certified smart-sounding words.</p>
+        </div>
+        
+        <div class="post-card">
+            <span class="post-date">January 2024</span>
+            <h2><a href="/tallimantra/blog/posts/2024-01-fun-setup-script.html">The Joy of Setup Scripts</a></h2>
+            <p>How we turned the mundane task of project setup into an ASCII art extravaganza.</p>
+        </div>
+    </main>
+
+    <div id="tm-footer"></div>
+</body>
+</html> 

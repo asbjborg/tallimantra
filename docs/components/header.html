@@ -1,0 +1,64 @@
+<!-- Tallimantra Header Component -->
+<header class="tm-header">
+    <pre class="tm-logo">
+ _____     _ _ _                      _             
+|_   _|_ _| | (_)_ __  __ _ _ _  ___| |_ _ _ __ _  
+  | |/ _` | | | | '  \/ _` | ' \/ -_)  _| '_/ _` | 
+  |_|\__,_|_|_|_|_|_|_\__,_|_||_\___|\__|_| \__,_| 
+    </pre>
+    
+    <nav class="tm-nav">
+        <a href="/tallimantra/docs" class="tm-nav-item">
+            <span class="emoji">📚</span>Docs
+        </a>
+        <a href="/tallimantra/blog" class="tm-nav-item">
+            <span class="emoji">✍️</span>Blog
+        </a>
+        <a href="/tallimantra/plugins" class="tm-nav-item">
+            <span class="emoji">🔌</span>Plugins
+        </a>
+    </nav>
+</header>
+
+<style>
+.tm-header {
+    margin-bottom: 2rem;
+}
+
+.tm-logo {
+    background: #2a2a2a;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    color: #00ff9d;
+    margin: 0 0 1rem 0;
+}
+
+.tm-nav {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background: #2a2a2a;
+    border-radius: 8px;
+}
+
+.tm-nav-item {
+    color: #00ff9d;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.tm-nav-item:hover {
+    background: #3a3a3a;
+    text-decoration: none;
+}
+
+.tm-nav-item .emoji {
+    font-size: 1.2rem;
+}
+</style> 

@@ -1,88 +1,66 @@
-# Tallimantra
+# 🎭 Tallimantra
 
-A plugin-based documentation and knowledge management system.
+Where code meets comedy, and every bug is a feature in disguise.
 
-## Features
+## 🌟 Features
 
-- 🔌 Plugin Architecture: Everything is a plugin
-- 📚 Documentation First: Built for both humans and AI
-- 🎯 Type Safety: Written in TypeScript
-- 🔄 Event-Driven: Reactive plugin communication
-- 🛠 Extensible: Easy to add new features
+- **Firecrawl**: A blazingly fast web crawler that occasionally crawls in the right direction
+- **Plugin System**: Because who doesn't want more ways for things to go wrong?
+- **Context Management**: AI-powered memory that's better than yours (probably)
+- **SUFFSIS™ Certified**: Smart-Sounding Utterly Fantastic Feature Set Implementation System
 
-## Installation
-
-```bash
-npm install tallimantra
-```
-
-## Quick Start
-
-```typescript
-import { Tallimantra } from 'tallimantra';
-
-// Initialize the system
-const system = new Tallimantra();
-
-// Load a plugin
-await system.loadPlugin('@tallimantra/plugin-name');
-
-// Start the system
-await system.start();
-```
-
-## Documentation
-
-- [Architecture Guide](docs/guides/architecture.md)
-- [Plugin Development](docs/guides/plugin-development.md)
-- [Documentation Standards](docs/guides/documentation.md)
-
-## Available Plugins
-
-- **Core**: Plugin system and event bus
-- **N8N Webhook**: N8N integration
-- **Media Preview**: Media file previews
-
-## Development
-
-### Prerequisites
-
-- Node.js >= 18
-- npm >= 9
-
-### Setup
+## 🚀 Quick Start
 
 ```bash
-# Clone the repository
+# Clone with style
 git clone https://github.com/asbjborg/tallimantra.git
+cd tallimantra
 
-# Install dependencies
+# Install dependencies (and hopes and dreams)
 npm install
 
-# Build
-npm run build
-
-# Run tests
-npm test
+# Start the app
+npm start
 ```
 
-### Contributing
+## 📚 Documentation
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+Visit our [GitHub Pages site](https://asbjborg.github.io/tallimantra/) for:
+- [Technical Documentation](https://asbjborg.github.io/tallimantra/docs)
+- [Developer Blog](https://asbjborg.github.io/tallimantra/blog)
+- [Plugin Store](https://asbjborg.github.io/tallimantra/plugins)
 
-## License
+## 🧪 Development
 
-GNU Affero General Public License v3.0 or later (AGPL-3.0-or-later)
+```bash
+# Run tests (and cross fingers)
+npm test
 
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+# Build for production
+npm run build
 
-See [LICENSE](LICENSE) for details.
+# Validate plugins
+npm run validate-plugins
+```
 
-## Version History
+## 🔌 Plugins
 
-### 0.1.0
-- Initial release
-- Core plugin system
-- Event bus implementation
-- Basic plugin examples
-- Documentation structure
+Create your own plugins! Check out our [Plugin Development Guide](https://asbjborg.github.io/tallimantra/docs/guides/plugin-development.html).
+
+## 🤝 Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b feat/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: add some amazingness'`)
+4. Push to the branch (`git push origin feat/amazing-feature`)
+5. Open a Pull Request
+6. Wait for our highly sophisticated CI checks (they're actually quite good)
+
+## 📜 License
+
+GNU Affero General Public License v3.0 (AGPL-3.0) - Because freedom isn't just another word for nothing left to lose, it's a commitment to keeping software open and accessible for everyone.
+
+See [LICENSE](LICENSE) for the full text.
+
+---
+Made with ❤️ and questionable humor by [Teddy](https://github.com/asbjborg)

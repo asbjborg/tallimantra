@@ -1,208 +1,144 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
-import * as path from 'path';
-import * as url from 'url';
-import * as dotenv from 'dotenv';
-import { fileURLToPath } from 'url';
-import * as fs from 'fs/promises';
+import { app, BrowserWindow } from 'electron';
+import { config } from 'dotenv';
+import type { CrawlResponse } from './types';
+import path from 'path';
+import { mkdir, writeFile } from 'fs/promises';
 
 // Load environment variables
-dotenv.config({ path: path.join(process.cwd(), '.env') });
+config();
 
-const API_KEY = process.env.FIRECRAWL_API_KEY;
-const BASE_URL = 'https://api.firecrawl.dev/v1';
-const OUTPUT_DIR = process.env.OUTPUT_DIR;
-if (!OUTPUT_DIR) {
-  throw new Error('OUTPUT_DIR environment variable is required');
+function formatError(err: unknown): Error {
+  return err instanceof Error ? err : new Error(String(err));
 }
 
-interface CrawlOptions {
-  formats?: string[];
-  maxDepth?: number;
-  limit?: number;
-  includePaths?: string[];
-  excludePaths?: string[];
-  allowBackwardLinks?: boolean;
-  allowExternalLinks?: boolean;
-  waitFor?: number;
-  timeout?: number;
-}
-
-interface CrawlResponse {
-  data: any[];
-  status?: string;
-  error?: string;
-}
-
-class FirecrawlAPI {
-  private async request(endpoint: string, options: any): Promise<CrawlResponse> {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${API_KEY}`
-      },
-      body: JSON.stringify(options)
-    });
-
-    if (!response.ok) {
-      throw new Error(`API request failed: ${response.statusText}`);
-    }
-
-    return response.json();
-  }
-
-  async map(url: string, options: CrawlOptions = {}): Promise<string[]> {
-    const response = await this.request('/map', { url, ...options });
-    return response.data.links || [];
-  }
-
-  async scrape(url: string, options: CrawlOptions = {}): Promise<any[]> {
-    const response = await this.request('/scrape_url', { url, ...options });
-    return response.data;
-  }
-
-  async crawl(url: string, options: CrawlOptions = {}, onProgress?: (percent: number, message: string) => void): Promise<any[]> {
-    // Start crawl job
-    onProgress?.(10, 'Starting crawl job...');
-    const response = await this.request('/crawl', { url, ...options });
-    const jobId = response.id;
-
-    if (!jobId) {
-      throw new Error('No job ID returned');
-    }
-
-    // Poll for completion
-    let attempts = 0;
-    while (attempts < 60) { // 5 minutes timeout
-      const status = await fetch(`${BASE_URL}/crawl/${jobId}`, {
-        headers: { 'Authorization': `Bearer ${API_KEY}` }
-      }).then(r => r.json());
-
-      const percent = Math.min(25 + (attempts * 1.25), 90);
-      onProgress?.(percent, `Processing... ${attempts * 5}s`);
-
-      if (status.status === 'completed') {
-        onProgress?.(95, 'Downloading results...');
-        return status.data;
-      }
-      if (status.status === 'failed') {
-        throw new Error(`Crawl failed: ${status.error}`);
-      }
-
-      attempts++;
-      await new Promise(resolve => setTimeout(resolve, 5000));
-    }
-
-    throw new Error('Crawl timed out');
-  }
-}
-
-class FirecrawlGUI {
-  private mainWindow: BrowserWindow | null = null;
-  private api: FirecrawlAPI;
-
-  constructor() {
-    this.api = new FirecrawlAPI();
-    this.setupIPC();
-  }
-
-  private setupIPC() {
-    ipcMain.on('start-crawl', async (event, { url, mode, options, outputFolder }) => {
-      try {
-        const sendProgress = (percent: number, message: string) => {
-          event.sender.send('progress', { percent, message });
-        };
-
-        // Create output directory
-        const outputPath = path.join(process.cwd(), OUTPUT_DIR, outputFolder);
-        await fs.mkdir(outputPath, { recursive: true });
-
-        // Process based on mode
-        let data: any[];
-        switch (mode) {
-          case 'map':
-            sendProgress(50, 'Mapping site...');
-            data = await this.api.map(url, options);
-            break;
-          case 'crawl':
-            data = await this.api.crawl(url, options, sendProgress);
-            break;
-          default: // scrape
-            sendProgress(50, 'Scraping page...');
-            data = await this.api.scrape(url, options);
-        }
-
-        // Save results
-        sendProgress(98, 'Saving results...');
-        for (const [index, item] of data.entries()) {
-          const title = item.metadata?.title || `page_${index}`;
-          const filename = `${title.toLowerCase().replace(/[^a-z0-9]+/g, '_')}.md`;
-          const filePath = path.join(outputPath, filename);
-          
-          // Format markdown with frontmatter
-          const content = `---\n${Object.entries(item.metadata || {})
-            .map(([k, v]) => `${k}: ${JSON.stringify(v)}`)
-            .join('\n')}\n---\n\n${item.data?.markdown || ''}`;
-          
-          await fs.writeFile(filePath, content, 'utf8');
-        }
-
-        event.sender.send('complete', {
-          success: true,
-          message: `Saved ${data.length} files to ${outputFolder}/`
-        });
-      } catch (error) {
-        event.sender.send('complete', {
-          success: false,
-          message: error.message
-        });
-      }
-    });
-  }
-
-  async start() {
-    await app.whenReady();
-    this.createWindow();
-
-    app.on('window-all-closed', () => {
-      if (process.platform !== 'darwin') {
-        app.quit();
-      }
-    });
-
-    app.on('activate', () => {
-      if (BrowserWindow.getAllWindows().length === 0) {
-        this.createWindow();
-      }
-    });
-  }
-
-  private createWindow() {
-    this.mainWindow = new BrowserWindow({
-      width: 800,
-      height: 800,
-      webPreferences: {
-        nodeIntegration: true,
-        contextIsolation: false
-      }
-    });
-
-    // Load the GUI HTML file
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
+export async function crawlPage(url: string): Promise<CrawlResponse> {
+  console.log(`[Crawler] Starting to crawl: ${url}`);
+  try {
+    const fetchResponse = await fetch(url);
+    console.log(`[Crawler] Fetched page: ${fetchResponse.status} ${fetchResponse.statusText}`);
     
-    this.mainWindow.loadURL(url.format({
-      pathname: path.join(__dirname, 'index.html'),
-      protocol: 'file:',
-      slashes: true
-    }));
+    const html = await fetchResponse.text();
+    console.log(`[Crawler] Got HTML content: ${html.length} bytes`);
+    
+    // Extract title
+    const titleMatch = html.match(/<title>(.*?)<\/title>/i);
+    const title = titleMatch ? titleMatch[1] : 'Untitled';
+    console.log(`[Crawler] Extracted title: ${title}`);
+    
+    // Extract links
+    const linkPattern = /<a[^>]+href="([^"]+)"/gi;
+    const links: string[] = [];
+    let match;
+    while ((match = linkPattern.exec(html)) !== null) {
+      if (!match[1].startsWith('#')) {
+        links.push(match[1]);
+      }
+    }
+    console.log(`[Crawler] Found ${links.length} links`);
+    
+    // Create response
+    const id = Buffer.from(url).toString('base64');
+    const crawlResponse: CrawlResponse = {
+      id,
+      title,
+      content: html,
+      links,
+      metadata: {
+        crawledAt: new Date().toISOString(),
+        sourceUrl: url
+      }
+    };
+    console.log(`[Crawler] Created response object with ID: ${id}`);
+    
+    return crawlResponse;
+  } catch (err) {
+    const error = formatError(err);
+    console.error('[Crawler] Error crawling page:', error);
+    throw error;
   }
 }
 
-// Start the application
-if (require.main === module) {
-  const gui = new FirecrawlGUI();
-  gui.start().catch(console.error);
+export async function saveResponse(response: CrawlResponse, outputDir: string, formats: string[]): Promise<void> {
+  console.log(`[Saver] Saving response to: ${outputDir}`);
+  console.log(`[Saver] Selected formats:`, formats);
+  
+  try {
+    // Create output directory
+    await mkdir(outputDir, { recursive: true });
+    console.log(`[Saver] Created directory: ${outputDir}`);
+    
+    // Save in each format
+    for (const format of formats) {
+      if (format === 'markdown') {
+        console.log(`[Saver] Creating markdown file...`);
+        const markdown = `---
+title: ${response.title}
+source_url: ${response.metadata.sourceUrl}
+crawled_at: ${response.metadata.crawledAt}
+---
+
+${response.content}`;
+        await writeFile(path.join(outputDir, 'index.md'), markdown);
+        console.log(`[Saver] Saved markdown to: ${path.join(outputDir, 'index.md')}`);
+      }
+      
+      if (format === 'html') {
+        console.log(`[Saver] Saving HTML file...`);
+        await writeFile(path.join(outputDir, 'index.html'), response.content);
+        console.log(`[Saver] Saved HTML to: ${path.join(outputDir, 'index.html')}`);
+      }
+      
+      if (format === 'links') {
+        console.log(`[Saver] Saving links file...`);
+        await writeFile(path.join(outputDir, 'links.json'), JSON.stringify(response.links, null, 2));
+        console.log(`[Saver] Saved ${response.links.length} links to: ${path.join(outputDir, 'links.json')}`);
+      }
+    }
+    
+    console.log(`[Saver] All files saved successfully`);
+  } catch (err) {
+    const error = formatError(err);
+    console.error('[Saver] Error saving response:', error);
+    throw error;
+  }
 }
 
-export { FirecrawlAPI, CrawlOptions, CrawlResponse }; 
+function createWindow(): BrowserWindow {
+  console.log('[App] Creating main window');
+  
+  const win = new BrowserWindow({
+    width: 800,
+    height: 600,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false
+    }
+  });
+
+  win.loadFile('dist/index.html');
+  console.log('[App] Loaded index.html');
+  
+  if (process.env.NODE_ENV === 'development') {
+    win.webContents.openDevTools();
+    console.log('[App] Opened DevTools (development mode)');
+  }
+  
+  return win;
+}
+
+app.whenReady().then(() => {
+  console.log('[App] Application ready, creating window');
+  createWindow();
+
+  app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+      createWindow();
+    }
+  });
+});
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+}); 
