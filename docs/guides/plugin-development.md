@@ -19,7 +19,9 @@ Tallimantra plugins follow a standardized structure and implementation pattern t
 ## Testing Requirements
 
 ### Coverage Standards
+
 All plugins must maintain minimum test coverage:
+
 ```typescript
 // jest.config.js
 module.exports = {
@@ -35,6 +37,7 @@ module.exports = {
 ```
 
 ### Test Categories
+
 1. **Unit Tests**
    - Individual functions
    - Component behavior
@@ -60,6 +63,7 @@ module.exports = {
    - Load testing
 
 ### Test Structure
+
 ```typescript
 // Example test structure
 describe('MyPlugin', () => {
@@ -94,6 +98,7 @@ describe('MyPlugin', () => {
 ## Directory Structure
 
 Create your plugin in `plugins/[plugin-name]` with this structure:
+
 ```
 [plugin-name]/
 ├── src/
@@ -113,6 +118,7 @@ Create your plugin in `plugins/[plugin-name]` with this structure:
 ## Implementation Guide
 
 ### 1. Core Interface
+
 ```typescript
 import { TallimantraPlugin } from '@tallimantra/core';
 
@@ -128,9 +134,11 @@ export default class MyPlugin implements TallimantraPlugin {
 ```
 
 ### 2. Type Safety
+
 - Use TypeScript's strict mode
 - Define explicit interfaces for all data structures
 - Example:
+
 ```typescript
 interface PluginConfig {
   readonly apiKey: string;
@@ -143,6 +151,7 @@ interface PluginConfig {
 ```
 
 ### 3. Event System
+
 ```typescript
 // Event naming convention: [plugin]:[event]
 export const EVENTS = {
@@ -157,6 +166,7 @@ this.eventBus.on(EVENTS.DATA_UPDATED, (data: DataType) => {
 ```
 
 ### 4. State Management
+
 ```typescript
 import { createStore } from '@tallimantra/core';
 
@@ -174,6 +184,7 @@ const store = createStore<PluginState>({
 ## Testing Guide
 
 ### 1. Unit Testing
+
 ```typescript
 // src/__tests__/plugin.test.ts
 import MyPlugin from '../index';
@@ -209,6 +220,7 @@ describe('MyPlugin', () => {
 ```
 
 ### 2. Integration Testing
+
 ```typescript
 // tests/integration/core.test.ts
 import { TallimantraCore } from '@tallimantra/core';
@@ -238,6 +250,7 @@ describe('Plugin Integration', () => {
 ```
 
 ### 3. Performance Testing
+
 ```typescript
 // tests/performance/memory.test.ts
 import { measureMemory } from '@tallimantra/test-utils';
@@ -262,6 +275,7 @@ describe('Plugin Performance', () => {
 ## Documentation Requirements
 
 ### README Structure
+
 ```markdown
 # Plugin Name
 
@@ -310,6 +324,7 @@ Detailed API documentation
 ```
 
 ### Code Documentation
+
 ```typescript
 /**
  * Processes incoming data and emits results
@@ -349,4 +364,5 @@ Before submitting your plugin:
 - [ ] Examples tested
 - [ ] Security tested
 - [ ] Accessibility tested
-``` 
+
+```

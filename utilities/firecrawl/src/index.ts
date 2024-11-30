@@ -103,7 +103,7 @@ ${response.content}`;
   }
 }
 
-function createWindow(): BrowserWindow {
+function createWindow(): Electron.BrowserWindow {
   console.log('[App] Creating main window');
   
   const win = new BrowserWindow({
@@ -115,7 +115,7 @@ function createWindow(): BrowserWindow {
     }
   });
 
-  win.loadFile('dist/index.html');
+  win.loadURL(`file://${__dirname}/dist/index.html`);
   console.log('[App] Loaded index.html');
   
   if (process.env.NODE_ENV === 'development') {
@@ -126,19 +126,22 @@ function createWindow(): BrowserWindow {
   return win;
 }
 
-app.whenReady().then(() => {
-  console.log('[App] Application ready, creating window');
-  createWindow();
+// Only initialize Electron app if this is the main module
+if (require.main === module) {
+  app.whenReady().then(() => {
+    console.log('[App] Application ready, creating window');
+    createWindow();
 
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
+    app.on('activate', () => {
+      if (BrowserWindow.getAllWindows().length === 0) {
+        createWindow();
+      }
+    });
+  });
+
+  app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+      app.quit();
     }
   });
-});
-
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-}); 
+} 
