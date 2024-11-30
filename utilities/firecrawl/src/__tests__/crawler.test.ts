@@ -2,11 +2,12 @@ import { jest } from '@jest/globals';
 import { crawlPage } from '../index';
 
 // Mock fetch
-global.fetch = jest.fn();
+const mockFetch = jest.fn() as jest.MockedFunction<typeof fetch>;
+global.fetch = mockFetch;
 
 describe('crawlPage', () => {
   beforeEach(() => {
-    (global.fetch as jest.Mock).mockClear();
+    mockFetch.mockClear();
   });
 
   it('should crawl a page successfully', async () => {
@@ -20,11 +21,11 @@ describe('crawlPage', () => {
       </html>
     `;
 
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
+    mockFetch.mockResolvedValueOnce({
       status: 200,
       statusText: 'OK',
       text: () => Promise.resolve(mockHtml)
-    });
+    } as Response);
 
     const result = await crawlPage('https://test-url.com');
 
@@ -41,7 +42,7 @@ describe('crawlPage', () => {
   });
 
   it('should handle fetch errors', async () => {
-    (global.fetch as jest.Mock).mockRejectedValueOnce(new Error('Network error'));
+    mockFetch.mockRejectedValueOnce(new Error('Network error'));
 
     await expect(crawlPage('https://error-url.com')).rejects.toThrow('Network error');
   });
