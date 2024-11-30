@@ -103,7 +103,7 @@ ${response.content}`;
   }
 }
 
-function createWindow(): typeof BrowserWindow {
+function createWindow(): BrowserWindow {
   console.log('[App] Creating main window');
   
   const win = new BrowserWindow({
