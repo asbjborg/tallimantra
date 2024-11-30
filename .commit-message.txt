@@ -1,0 +1,12 @@
+feat: Next.js v15 setup with Tailwind
+
+Sets up Next.js v15.0.3 with TypeScript and Tailwind CSS.
+
+Changes:
+- Update Next.js to v15.0.3
+- Configure Tailwind CSS with typography plugin
+- Fix content paths for Tailwind
+- Remove deprecated Next.js options
+- Update all related dependencies
+
+This PR provides the foundation for building out the app pages and components. 
