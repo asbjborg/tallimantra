@@ -1,0 +1,11 @@
+{
+  "id": "hello-world",
+  "name": "Hello World Plugin",
+  "version": "1.0.0",
+  "description": "A simple hello world plugin example",
+  "main": "index.ts",
+  "author": "Teddy",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+} 

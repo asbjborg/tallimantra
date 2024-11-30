@@ -1,21 +1,17 @@
 {
+  "id": "@tallimantra/media-preview",
   "name": "@tallimantra/media-preview",
   "version": "0.1.0",
   "description": "Automatically detects and renders media URLs inline in your chat feed",
   "author": "Tallimantra",
-  "homepage": "https://github.com/asbjborg/tallimantra",
-  "repository": "github:asbjborg/tallimantra",
   "license": "AGPL-3.0-or-later",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "index.ts",
   "dependencies": {
     "@tallimantra/core": "^0.1.0"
   },
-  "permissions": [
-    "network",
-    "storage",
-    "media"
-  ],
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "config": {
     "schema": {
       "max_width": {

@@ -123,4 +123,5 @@
 
 ## git
 - use `.commit-message.txt` to create multi-line commit messages
+- add comments to issues when appropriate for high level updates and context, otherwise use commit messages
 ``` 
