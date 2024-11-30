@@ -10,7 +10,7 @@ Tallimantra follows a radical "everything is a plugin" architecture. This means 
 
 ## Project Structure
 
-```
+```text
 tallimantra/
 ├── src/                # Core application source
 ├── plugins/            # Plugin system
@@ -29,6 +29,7 @@ tallimantra/
 ## Base Plugins
 
 ### Core Plugin (`@tallimantra/core`)
+
 - Plugin system foundation
 - Event bus
 - Plugin lifecycle management
@@ -36,18 +37,21 @@ tallimantra/
 - Inter-plugin communication
 
 ### UI Base Plugin (`@tallimantra/ui-base`)
+
 - Basic chat interface
 - Theme system
 - Layout management
 - UI extension points for other plugins
 
 ### Message Processor Plugin (`@tallimantra/message-processor`)
+
 - Message pipeline management
 - Message transformation hooks
 - Message routing
 - Message history management
 
 ### Storage Plugin (`@tallimantra/storage`)
+
 - Basic file/memory storage
 - Plugin state persistence
 - Message history storage
@@ -56,6 +60,7 @@ tallimantra/
 ### Optional Base Plugins
 
 #### Authentication Plugin (`@tallimantra/auth`)
+
 - User management
 - Authentication methods
 - Permission system
@@ -63,12 +68,14 @@ tallimantra/
 - Can be omitted for single-user deployments
 
 #### API Plugin (`@tallimantra/api`)
+
 - External API access
 - API key management
 - Rate limiting
 - API documentation
 
 #### Monitoring Plugin (`@tallimantra/monitoring`)
+
 - System health checks
 - Performance metrics
 - Usage statistics
@@ -77,6 +84,7 @@ tallimantra/
 ## Plugin System
 
 ### Plugin Interface
+
 ```typescript
 interface Plugin {
   id: string;
@@ -115,6 +123,7 @@ interface Plugin {
 ### Inter-Plugin Communication
 
 Plugins can communicate through:
+
 1. **Events**: Pub/sub system for loose coupling
 2. **Extension Points**: Direct feature extension
 3. **Service Registry**: Shared capabilities
@@ -122,19 +131,25 @@ Plugins can communicate through:
 ## Deployment Scenarios
 
 ### Single User (Minimal)
+
 Required plugins:
+
 - `@tallimantra/core`
 - `@tallimantra/ui-base`
 - `@tallimantra/message-processor`
 - `@tallimantra/storage`
 
 ### Multi-User (Standard)
+
 Adds:
+
 - `@tallimantra/auth`
 - `@tallimantra/api`
 
 ### Enterprise/SaaS (Full)
+
 Adds:
+
 - `@tallimantra/monitoring`
 - Custom enterprise plugins
 
@@ -164,6 +179,7 @@ Adds:
 Tallimantra includes standalone utilities that support the main application but operate independently:
 
 ### Documentation Crawler (Firecrawl)
+
 - Crawls external documentation
 - Converts to markdown format
 - Adds YAML frontmatter
@@ -173,6 +189,7 @@ Tallimantra includes standalone utilities that support the main application but 
 ## Documentation System
 
 ### Structure
+
 1. **Core Documentation**
    - Architecture
    - Development guides
@@ -190,6 +207,7 @@ Tallimantra includes standalone utilities that support the main application but 
    - Version controlled
 
 ### Documentation Flow
+
 1. **Internal Docs**
    - Written and maintained manually
    - Follow standard markdown format
