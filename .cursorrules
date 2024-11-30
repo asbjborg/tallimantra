@@ -120,4 +120,7 @@
 - Include test requirements in AI context
 - Use gh commands for GitHub operations
 - Remember command sandbox limitations
+
+## git
+- use `.commit-message.txt` to create multi-line commit messages
 ``` 
