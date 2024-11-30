@@ -92,9 +92,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# package locks
-package-lock.json
-**/package-lock.json
-
 # temp directories
 /temp-next
