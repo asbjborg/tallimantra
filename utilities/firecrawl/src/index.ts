@@ -103,7 +103,7 @@ ${response.content}`;
   }
 }
 
-function createWindow(): BrowserWindow {
+function createWindow(): typeof BrowserWindow {
   console.log('[App] Creating main window');
   
   const win = new BrowserWindow({
@@ -115,7 +115,7 @@ function createWindow(): BrowserWindow {
     }
   });
 
-  win.loadFile('dist/index.html');
+  win.loadURL(`file://${__dirname}/dist/index.html`);
   console.log('[App] Loaded index.html');
   
   if (process.env.NODE_ENV === 'development') {

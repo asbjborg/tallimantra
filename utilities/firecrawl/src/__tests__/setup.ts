@@ -15,4 +15,13 @@ jest.mock('electron', () => ({
   ipcMain: {
     handle: jest.fn()
   }
-})); 
+}));
+
+describe('Electron Mock', () => {
+  it('should mock electron correctly', () => {
+    const electron = require('electron');
+    expect(electron.app.whenReady).toBeDefined();
+    expect(electron.BrowserWindow).toBeDefined();
+    expect(electron.ipcMain.handle).toBeDefined();
+  });
+}); 
