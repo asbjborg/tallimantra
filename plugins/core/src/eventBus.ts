@@ -1,9 +1,22 @@
 import EventEmitter from 'eventemitter3';
 
 type AsyncListener = (...args: any[]) => Promise<void> | void;
+type Listener = (...args: any[]) => void;
 
 export class EventBus extends EventEmitter {
   private asyncListeners: Map<string, AsyncListener[]> = new Map();
+
+  on(event: string, listener: Listener): this {
+    return super.on(event, listener);
+  }
+
+  off(event: string, listener: Listener): this {
+    return super.off(event, listener);
+  }
+
+  emit(event: string, ...args: any[]): boolean {
+    return super.emit(event, ...args);
+  }
 
   onAsync(event: string, listener: AsyncListener): void {
     const listeners = this.asyncListeners.get(event) || [];

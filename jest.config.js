@@ -6,4 +6,9 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
+  modulePathIgnorePatterns: ['<rootDir>/dist/'],
+  transformIgnorePatterns: [
+    'node_modules/(?!(electron|dotenv)/)',
+  ],
+  moduleDirectories: ['node_modules', 'src'],
 }; 
