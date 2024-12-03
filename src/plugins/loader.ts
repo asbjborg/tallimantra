@@ -4,7 +4,7 @@ import { Plugin, PluginManifest, LoadedPlugin, PluginLoadError, PluginHookResult
 
 export class PluginLoader {
   private plugins: Map<string, LoadedPlugin> = new Map();
-  private pluginDir: string;
+  protected pluginDir: string;
 
   constructor(pluginDir: string) {
     this.pluginDir = pluginDir;
@@ -33,7 +33,7 @@ export class PluginLoader {
       }
 
       const mainPath = path.join(pluginPath, manifest.main);
-      const pluginModule = await import(mainPath);
+      const pluginModule = await this.importModule(mainPath);
       const plugin: Plugin = pluginModule.default;
 
       if (!this.validatePlugin(plugin)) {
@@ -57,6 +57,10 @@ export class PluginLoader {
       };
       return { success: false, error: pluginError };
     }
+  }
+
+  protected async importModule(modulePath: string): Promise<{ default: Plugin }> {
+    return import(modulePath);
   }
 
   private validateManifest(manifest: PluginManifest): boolean {
